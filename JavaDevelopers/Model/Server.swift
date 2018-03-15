@@ -12,9 +12,9 @@ import CodableAlamofire
 
 class Server {
     
-    static func getJavaDevelopers(completion: @escaping ([User]?) -> Void)
+    static func getJavaDevelopers(fromPage page: Int, completion: @escaping ([User]?) -> Void)
     {
-        Alamofire.request("https://api.github.com/search/users?per_page=10", method: .get, parameters: ["q": "language:java"], encoding: URLEncoding.queryString).responseDecodableObject {
+        Alamofire.request("https://api.github.com/search/users?per_page=10", method: .get, parameters: ["q": "language:java", "page": "\(page)"], encoding: URLEncoding.queryString).responseDecodableObject {
             (response: DataResponse<SearchResult>) in
             
             var users:[User] = []
@@ -36,8 +36,10 @@ class Server {
     
     static func getUserByURL(userURL: URL, completion: @escaping (User) -> Void) {
         Alamofire.request(userURL, method: .get).responseDecodableObject { (response: DataResponse<User>) in
+            guard var user = response.result.value else { return }
             
-            completion(response.result.value!)
+            user.date = convertGitHubDate(dateString: user.date)
+            completion(user)
         }
     }
     
@@ -46,8 +48,6 @@ class Server {
         if let url = user.avatar_url {
             Alamofire.request(url).responseImage {
                 response in
-                
-                print(response.response)
                 
                 completion(response.result.value)
             }

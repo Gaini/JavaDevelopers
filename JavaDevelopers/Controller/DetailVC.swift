@@ -25,11 +25,28 @@ class DetailVC: UIViewController {
     }
     
     func updateUI() {
-        //profileImageView.image = user.image
+        profileImageView.image = user.avatar
         nicknameLabel.text = "Username: \(user.login)"
         emailLabel.text = "email: \(user.email ?? "no email")"
         followersLabel.text = "Followers: \(user.followers)"
         dateLabel.text = "Date: \n\(user.date)"
     }
 
+    @IBAction func openEmailApp() {
+        
+//        let email = user.email
+//        if let url = URL(string: "mailto:\(email)") {
+//            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+//        }
+        
+//        guard let url = URL(string: email!) else {
+//            return
+//        }
+//        if #available(iOS 10.0, *) {
+//            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+//        } else {
+//            UIApplication.shared.openURL(url)
+//        }
+    
+    }
 }
