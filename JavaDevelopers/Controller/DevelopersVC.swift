@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    @IBOutlet var tableView: UITableView!
+class DevelopersVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet weak var tableView: UITableView!
+    
     var users = [User]()
     var page = 1
     let AmountBeforeLoadNext = 2
-    
 
 
     override func viewDidLoad() {
@@ -21,13 +21,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
        
         // customize navigation bar
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        
-        
+               
         loadNextPage()
         
-        //self-sizing cell
-        tableView.estimatedRowHeight = 80
-        tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     func loadNextPage() {
@@ -44,10 +40,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! TableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! DeveloperCell
+        
         let user = users[indexPath.row]
-        cell.usernameLabel.text = user.login
-        cell.dateLabel.text = user.date
+        cell.setupWithUser(user)
         
         if user.avatar == nil {
             Server.getUserAvatar(user, completion: {image in
@@ -55,7 +51,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 tableView.reloadRows(at: [indexPath], with: .fade)
             })
         }
-        cell.profileImageView.image = user.avatar
         
         return cell
     }
@@ -70,7 +65,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let destinationController = segue.destination as! DetailVC
+                let destinationController = segue.destination as! DeveloperDetailVC
                 destinationController.user = users[indexPath.row]
             }
         }

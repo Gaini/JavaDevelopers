@@ -11,10 +11,14 @@ import AlamofireImage
 import CodableAlamofire
 
 class Server {
+    static let baseUrl = "https://api.github.com"
     
     static func getJavaDevelopers(fromPage page: Int, completion: @escaping ([User]?) -> Void)
     {
-        Alamofire.request("https://api.github.com/search/users?per_page=10", method: .get, parameters: ["q": "language:java", "page": "\(page)"], encoding: URLEncoding.queryString).responseDecodableObject {
+        let url = getUrl("/search/users?")
+        let parameters = SearchUserParameters(q: "language:java", page: page, per_page: 10).dictionary
+        
+        Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.queryString).responseDecodableObject {
             (response: DataResponse<SearchResult>) in
             
             var users:[User] = []
@@ -52,6 +56,10 @@ class Server {
                 completion(response.result.value)
             }
         }
+    }
+    
+    private static func getUrl(_ path: String) -> String {
+        return baseUrl + path
     }
 }
 

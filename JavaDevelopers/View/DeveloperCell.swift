@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableViewCell: UITableViewCell {
+class DeveloperCell: UITableViewCell {
 
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
@@ -24,6 +24,12 @@ class TableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func setupWithUser(_ user: User) {
+        usernameLabel.text = user.login
+        dateLabel.text = user.date
+        profileImageView.image = user.avatar
     }
 
 }

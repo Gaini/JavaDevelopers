@@ -8,9 +8,9 @@
 
 import Foundation
 
-func convertGitHubDate(dateString: String) -> String {
+private let dateFormatter = DateFormatter()
 
-    let dateFormatter = DateFormatter()
+func convertGitHubDate(dateString: String) -> String {
     
     //convert dateString to Date format
     dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"

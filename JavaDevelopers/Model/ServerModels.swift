@@ -35,4 +35,11 @@ struct User: Decodable {
     
 }
 
+struct SearchUserParameters: Codable {
+    var q: String
+    var page: Int
+    var per_page: Int
+}
+
+
 
